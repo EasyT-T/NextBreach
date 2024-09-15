@@ -1,5 +1,5 @@
 
-# CB.Updater
+# NextBreach
 
 A [SCP - Containment Breach](https://github.com/Regalis11/scpcb/) wrapper API for [.NET Core](https://github.com/dotnet/core). Created by [EasyT_T](https://github.com/EasyT-T).
 
