@@ -1,15 +1,21 @@
 ﻿namespace NextBreach.Structures.Entity;
 
 using System.Numerics;
+using Map;
 using Stream;
 
 public struct WaypointEntity : IEntity
 {
-    public Vector3 Position { get; private set; }
+    public Vector3 Position { get; set; }
 
-    public void Create(RMeshReader reader)
+    public void Read(RMeshReader reader)
     {
-        var position = reader.ReadCoordination() * 8.0f / 2048.0f;
+        var position = reader.ReadCoordination();
         Position = position;
+    }
+
+    public void Write(RMeshWriter writer)
+    {
+        writer.Write(Position);
     }
 }

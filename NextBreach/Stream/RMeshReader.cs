@@ -1,5 +1,6 @@
 ﻿namespace NextBreach.Stream;
 
+using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
 using System.Text;
@@ -66,10 +67,7 @@ public class RMeshReader : BinaryReader
 
     public Vertex ReadVertex()
     {
-        var x = ReadSingle();
-        var y = ReadSingle();
-        var z = ReadSingle();
-        var position = new Vector3(x, y, z);
+        var position = ReadCoordination();
 
         var diffuseU = ReadSingle();
         var diffuseV = ReadSingle();
@@ -213,7 +211,7 @@ public class RMeshReader : BinaryReader
         var entityName = ReadString();
 
         var entity = EntityFactory.GetEntity(entityName);
-        entity.Create(this);
+        entity.Read(this);
 
         return entity;
     }

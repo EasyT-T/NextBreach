@@ -1,21 +1,22 @@
 ﻿namespace NextBreach.Structures.Entity;
 
 using System.Numerics;
+using Map;
 using Stream;
 
 public struct ModelEntity : IEntity
 {
-    public Vector3 Position { get; private set; }
-    public string Name { get; private set; }
-    public Vector3 Rotation { get; private set; }
-    public Vector3 Scale { get; private set; }
+    public Vector3 Position { get; set; }
+    public string Name { get; set; }
+    public Vector3 Rotation { get; set; }
+    public Vector3 Scale { get; set; }
 
-    public void Create(RMeshReader reader)
+    public void Read(RMeshReader reader)
     {
-        var name = Path.GetFileNameWithoutExtension(reader.ReadString());
+        var name = reader.ReadString();
         Name = name;
 
-        var position = reader.ReadCoordination() * 8.0f / 2048.0f;
+        var position = reader.ReadCoordination();
         Position = position;
 
         var rotation = reader.ReadCoordination();
@@ -23,5 +24,13 @@ public struct ModelEntity : IEntity
 
         var scale = reader.ReadCoordination();
         Scale = scale;
+    }
+
+    public void Write(RMeshWriter writer)
+    {
+        writer.Write(Name);
+        writer.Write(Position);
+        writer.Write(Rotation);
+        writer.Write(Scale);
     }
 }

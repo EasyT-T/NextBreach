@@ -2,24 +2,25 @@
 
 using System.Numerics;
 using Enums;
+using Map;
 using Stream;
 
 public struct MeshEntity : IEntity
 {
-    public Vector3 Position { get; private set; }
-    public string Name { get; private set; }
-    public Vector3 Rotation { get; private set; }
-    public Vector3 Scale { get; private set; }
-    public bool HasCollision { get; private set; }
-    public int MeshFx { get; private set; }
-    public Texture Texture { get; private set; }
+    public Vector3 Position { get; set; }
+    public string Name { get; set; }
+    public Vector3 Rotation { get; set; }
+    public Vector3 Scale { get; set; }
+    public bool HasCollision { get; set; }
+    public int MeshFx { get; set; }
+    public Texture Texture { get; set; }
 
-    public void Create(RMeshReader reader)
+    public void Read(RMeshReader reader)
     {
-        var position = reader.ReadCoordination() * 8.0f / 2048.0f;
+        var position = reader.ReadCoordination();
         Position = position;
 
-        var name = Path.GetFileNameWithoutExtension(reader.ReadString());
+        var name = reader.ReadString();
         Name = name;
 
         var rotation = reader.ReadCoordination();
@@ -40,5 +41,16 @@ public struct MeshEntity : IEntity
             Type = TextureType.Diffuse,
         };
         Texture = texture;
+    }
+
+    public void Write(RMeshWriter writer)
+    {
+        writer.Write(Position);
+        writer.Write(Name);
+        writer.Write(Rotation);
+        writer.Write(Scale);
+        writer.Write(HasCollision);
+        writer.Write(MeshFx);
+        writer.Write(Texture.Name);
     }
 }

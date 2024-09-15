@@ -4,5 +4,6 @@ using Stream;
 
 public interface IEntity
 {
-    void Create(RMeshReader reader);
+    void Read(RMeshReader reader);
+    void Write(RMeshWriter writer);
 }

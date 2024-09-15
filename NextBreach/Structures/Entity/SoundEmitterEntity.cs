@@ -1,17 +1,18 @@
 ﻿namespace NextBreach.Structures.Entity;
 
 using System.Numerics;
+using Map;
 using Stream;
 
 public struct SoundEmitterEntity : IEntity
 {
-    public Vector3 Position { get; private set; }
-    public int Id { get; private set; }
-    public float Range { get; private set; }
+    public Vector3 Position { get; set; }
+    public int Id { get; set; }
+    public float Range { get; set; }
 
-    public void Create(RMeshReader reader)
+    public void Read(RMeshReader reader)
     {
-        var position = reader.ReadCoordination() * 8.0f / 2048.0f;
+        var position = reader.ReadCoordination();
         Position = position;
 
         var id = reader.ReadInt32();
@@ -19,5 +20,12 @@ public struct SoundEmitterEntity : IEntity
 
         var range = reader.ReadSingle();
         Range = range;
+    }
+
+    public void Write(RMeshWriter writer)
+    {
+        writer.Write(Position);
+        writer.Write(Id);
+        writer.Write(Range);
     }
 }

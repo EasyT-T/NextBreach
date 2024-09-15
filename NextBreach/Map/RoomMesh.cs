@@ -7,11 +7,11 @@ using Stream = System.IO.Stream;
 
 public class RoomMesh
 {
-    public Mesh[] Meshes { get; }
-    public InvisibleCollision? InvisibleCollision { get; }
-    public IEntity[] Entities { get; }
+    public Mesh[] Meshes { get; set; }
+    public InvisibleCollision? InvisibleCollision { get; set; }
+    public IEntity[] Entities { get; set; }
 
-    private RoomMesh(Mesh[] meshes, InvisibleCollision? invisibleCollision, IEntity[]? entities = null)
+    public RoomMesh(Mesh[] meshes, InvisibleCollision? invisibleCollision, IEntity[]? entities = null)
     {
         Meshes = meshes;
         InvisibleCollision = invisibleCollision;
@@ -42,5 +42,18 @@ public class RoomMesh
         }
 
         return Load(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read));
+    }
+
+    public void SaveToFile(string filePath)
+    {
+        var stream = new RMeshWriter(File.Create(filePath));
+        stream.WriteVerifyText();
+        stream.Write(Meshes);
+        if (InvisibleCollision.HasValue)
+        {
+            stream.Write(InvisibleCollision.Value);
+        }
+        stream.Write(Entities);
+        stream.Close();
     }
 }
