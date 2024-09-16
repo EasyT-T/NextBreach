@@ -1,7 +1,6 @@
 ﻿namespace NextBreach.Structures.Entity;
 
 using System.Numerics;
-using Map;
 using Stream;
 
 public struct ModelEntity : IEntity

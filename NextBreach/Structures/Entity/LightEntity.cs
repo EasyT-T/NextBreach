@@ -2,9 +2,7 @@
 
 using System.Drawing;
 using System.Numerics;
-using Map;
 using Stream;
-using Math = System.Math;
 
 public struct LightEntity : IEntity
 {

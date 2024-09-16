@@ -53,6 +53,10 @@ public class RoomMesh
         {
             stream.Write(InvisibleCollision.Value);
         }
+        else
+        {
+            stream.Write(0);
+        }
         stream.Write(Entities);
         stream.Close();
     }

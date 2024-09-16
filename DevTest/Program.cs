@@ -6,13 +6,7 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
-        if (args.Length == 0)
-        {
-            Console.WriteLine("Please specify the RoomMesh file directory.");
-            return;
-        }
-
-        var filePath = args[0];
+        var filePath = args.Length == 0 ? Console.ReadLine() : args[0];
 
         if (!File.Exists(filePath))
         {
@@ -23,6 +17,7 @@ internal static class Program
         using var output = new StreamWriter(File.Create("mesh.log"));
 
         var roomMesh = RoomMesh.Load(filePath);
+
         var totalTexture = 0;
         var totalVertices = 0;
         var totalTriangles = 0;
@@ -63,5 +58,7 @@ internal static class Program
         output.WriteLine("Total vertices: " + totalVertices);
         output.WriteLine("Total triangles: " + totalTriangles);
         output.WriteLine("Total entities: " + roomMesh.Entities.Length);
+
+        Console.WriteLine("done!");
     }
 }

@@ -1,7 +1,5 @@
 ﻿namespace NextBreach.Stream;
 
-using System.Diagnostics;
-using System.Drawing;
 using System.Numerics;
 using System.Text;
 using Enums;
@@ -71,7 +69,7 @@ public class RMeshWriter(Stream stream) : BinaryWriter(stream)
 
     public void Write(InvisibleCollision invisibleCollision)
     {
-        Write(Convert.ToInt32(true));
+        Write(1);
 
         Write(invisibleCollision.Vertices.Length);
 
@@ -114,8 +112,6 @@ public class RMeshWriter(Stream stream) : BinaryWriter(stream)
         {
             Write(texture, hasLightmap ? (byte)1 : (byte)3);
         }
-
-        Flush();
 
         Write(mesh.Vertices.Length);
 

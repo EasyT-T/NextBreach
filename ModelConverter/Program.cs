@@ -4,6 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        Converter.Convert(args[0]);
+        var path = args.Length == 0 ? Console.ReadLine() : args[0];
+
+        Converter.Convert(path ?? string.Empty);
     }
 }

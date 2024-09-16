@@ -1,12 +1,10 @@
 ﻿namespace NextBreach.Stream;
 
-using System.Diagnostics;
 using System.Drawing;
 using System.Numerics;
 using System.Text;
 using Enums;
 using Factories;
-using Map;
 using Structures;
 using Structures.Entity;
 using Stream = System.IO.Stream;
@@ -47,6 +45,12 @@ public class RMeshReader : BinaryReader
         }
 
         var textureName = ReadString();
+
+        if (string.IsNullOrEmpty(textureName))
+        {
+            return null;
+        }
+
         var textureType = textureName.Contains("_lm") ? TextureType.Lightmap : TextureType.Diffuse;
 
         return new Texture

@@ -2,7 +2,6 @@
 
 using System.Numerics;
 using Enums;
-using Map;
 using Stream;
 
 public struct ScreenEntity : IEntity
