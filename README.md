@@ -5,7 +5,7 @@ A [SCP - Containment Breach](https://github.com/Regalis11/scpcb/) wrapper API fo
 
 ## Feature
 
-- RoomMesh (RMesh) support. (Read)
+- RoomMesh (RMesh) support. (Read Write)
 - Blitz3D's Random function.
 
 
