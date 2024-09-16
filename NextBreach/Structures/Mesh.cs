@@ -2,7 +2,7 @@
 
 public struct Mesh
 {
-    public Texture[] Textures { get; init; }
-    public Vertex[] Vertices { get; init; }
-    public Triangle[] Triangles { get; init; }
+    public Texture[] Textures { get; set; }
+    public Vertex[] Vertices { get; set; }
+    public Triangle[] Triangles { get; set; }
 }

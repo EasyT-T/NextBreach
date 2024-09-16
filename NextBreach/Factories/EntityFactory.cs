@@ -6,9 +6,11 @@ public static class EntityFactory
 {
     public static Dictionary<string, Type> Entities { get; } = new Dictionary<string, Type>
     {
+        { "playerstart", typeof(PlayerStartEntity) }, //Thank you, original CB.
         { "screen", typeof(ScreenEntity) },
         { "waypoint", typeof(WaypointEntity) },
         { "light", typeof(LightEntity) },
+        { "light_fix", typeof(LightFixEntity) }, //Thank you, UE Reborn.
         { "spotlight", typeof(SpotlightEntity) },
         { "mesh", typeof(MeshEntity) },
         { "model", typeof(ModelEntity) },
@@ -19,7 +21,7 @@ public static class EntityFactory
     {
         if (!Entities.TryGetValue(entityName.ToLower(), out var entityType))
         {
-            throw new ArgumentException("Invalid entity name. (Not found.)", nameof(entityName));
+            throw new ArgumentException($"Invalid entity name - {entityName}. (Not found.)", nameof(entityName));
         }
 
         var entity = Activator.CreateInstance(entityType) as IEntity;

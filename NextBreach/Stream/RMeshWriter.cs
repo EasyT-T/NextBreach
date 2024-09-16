@@ -16,9 +16,9 @@ public class RMeshWriter(Stream stream) : BinaryWriter(stream)
         Write(Encoding.ASCII.GetBytes(value));
     }
 
-    public void WriteVerifyText()
+    public void WriteVerifyText(string? verifyText = null)
     {
-        Write("RoomMesh");
+        Write(verifyText ?? "RoomMesh");
     }
 
     public void Write(Texture? texture, byte flag)
@@ -135,6 +135,40 @@ public class RMeshWriter(Stream stream) : BinaryWriter(stream)
         foreach (var mesh in meshes)
         {
             Write(mesh);
+        }
+    }
+
+    public void Write(TriggerBox triggerBox)
+    {
+        Write(triggerBox.MeshCount);
+
+        for (var i = 0; i < triggerBox.MeshCount; i++)
+        {
+            Write(triggerBox.Vertices[i].Length);
+
+            for (var j = 0; j < triggerBox.Vertices[i].Length; j++)
+            {
+                Write(triggerBox.Vertices[i][j]);
+            }
+
+            Write(triggerBox.Triangles[i].Length);
+
+            for (var j = 0; j < triggerBox.Triangles[i].Length; j++)
+            {
+                Write(triggerBox.Triangles[i][j]);
+            }
+        }
+
+        Write(triggerBox.Name);
+    }
+
+    public void Write(TriggerBox[] triggerBoxes)
+    {
+        Write(triggerBoxes.Length);
+
+        foreach (var triggerBox in triggerBoxes)
+        {
+            Write(triggerBox);
         }
     }
 

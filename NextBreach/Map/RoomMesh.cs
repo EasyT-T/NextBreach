@@ -5,28 +5,33 @@ using Structures;
 using Structures.Entity;
 using Stream = System.IO.Stream;
 
-public class RoomMesh
+public class RoomMesh(
+    Mesh[] meshes,
+    InvisibleCollision? invisibleCollision = null,
+    TriggerBox[]? triggerBoxes = null,
+    IEntity[]? entities = null,
+    string verifyText = "RoomMesh")
 {
-    public Mesh[] Meshes { get; set; }
-    public InvisibleCollision? InvisibleCollision { get; set; }
-    public IEntity[] Entities { get; set; }
-
-    public RoomMesh(Mesh[] meshes, InvisibleCollision? invisibleCollision, IEntity[]? entities = null)
-    {
-        Meshes = meshes;
-        InvisibleCollision = invisibleCollision;
-        Entities = entities ?? [];
-    }
+    public string VerifyText { get; private set; } = verifyText;
+    public Mesh[] Meshes { get; set; } = meshes;
+    public InvisibleCollision? InvisibleCollision { get; set; } = invisibleCollision;
+    public TriggerBox[] TriggerBoxes { get; set; } = triggerBoxes ?? [];
+    public IEntity[] Entities { get; set; } = entities ?? [];
 
     public static RoomMesh Load(Stream stream)
     {
         var roomMeshStream = new RMeshReader(stream);
         var meshes = roomMeshStream.ReadMeshes();
         var invisibleCollision = roomMeshStream.ReadInvisibleCollision();
+        TriggerBox[]? triggerBoxes = null;
+        if (roomMeshStream.HasTriggerBox)
+        {
+            triggerBoxes = roomMeshStream.ReadTriggerBoxes();
+        }
         var entities = roomMeshStream.ReadEntities();
         roomMeshStream.Close();
 
-        return new RoomMesh(meshes, invisibleCollision, entities);
+        return new RoomMesh(meshes, invisibleCollision, triggerBoxes, entities, roomMeshStream.VerifyText);
     }
 
     public static RoomMesh Load(byte[] buffer)
@@ -47,8 +52,9 @@ public class RoomMesh
     public void SaveToFile(string filePath)
     {
         var stream = new RMeshWriter(File.Create(filePath));
-        stream.WriteVerifyText();
+        stream.WriteVerifyText(VerifyText);
         stream.Write(Meshes);
+
         if (InvisibleCollision.HasValue)
         {
             stream.Write(InvisibleCollision.Value);
@@ -57,6 +63,12 @@ public class RoomMesh
         {
             stream.Write(0);
         }
+
+        if (TriggerBoxes.Length > 0)
+        {
+            stream.Write(TriggerBoxes);
+        }
+
         stream.Write(Entities);
         stream.Close();
     }

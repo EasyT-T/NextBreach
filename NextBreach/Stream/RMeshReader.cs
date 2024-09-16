@@ -11,19 +11,24 @@ using Stream = System.IO.Stream;
 
 public class RMeshReader : BinaryReader
 {
+    internal string VerifyText = string.Empty;
+    public bool HasTriggerBox => VerifyText.EndsWith("HasTriggerBox");
+
     public RMeshReader(Stream input) : base(input)
     {
-        if (!CheckForInvalid())
+        if (!CheckForValid())
         {
             throw new InvalidOperationException();
         }
     }
 
-    public bool CheckForInvalid()
+    public bool CheckForValid()
     {
-        var verifyText = ReadString();
-
-        return verifyText.StartsWith("RoomMesh");
+        if (string.IsNullOrEmpty(VerifyText))
+        {
+            VerifyText = ReadString();
+        }
+        return VerifyText.StartsWith("RoomMesh");
     }
 
     public override string ReadString()
@@ -204,6 +209,61 @@ public class RMeshReader : BinaryReader
             Vertices = vertices,
             Triangles = triangles,
         };
+    }
+
+    #endregion
+
+    #region TriggerBox
+
+    public TriggerBox ReadTriggerBox()
+    {
+        var meshCount = ReadInt32();
+        var vertices = new Vector3[meshCount][];
+        var triangles = new Triangle[meshCount][];
+
+        for (var i = 0; i < meshCount; i++)
+        {
+            var vertexCount = ReadInt32();
+            vertices[i] = new Vector3[vertexCount];
+
+            for (var j = 0; j < vertexCount; j++)
+            {
+                var position = ReadCoordination();
+                vertices[i][j] = position;
+            }
+
+            var triangleCount = ReadInt32();
+            triangles[i] = new Triangle[triangleCount];
+
+            for (var j = 0; j < triangleCount; j++)
+            {
+                var triangle = ReadTriangle();
+                triangles[i][j] = triangle;
+            }
+        }
+
+        var name = ReadString();
+
+        return new TriggerBox
+        {
+            Name = name,
+            MeshCount = meshCount,
+            Vertices = vertices,
+            Triangles = triangles,
+        };
+    }
+
+    public TriggerBox[] ReadTriggerBoxes()
+    {
+        var triggerCount = ReadInt32();
+        var triggerBoxes = new TriggerBox[triggerCount];
+
+        for (var i = 0; i < triggerCount; i++)
+        {
+            triggerBoxes[i] = ReadTriggerBox();
+        }
+
+        return triggerBoxes;
     }
 
     #endregion

@@ -4,6 +4,6 @@ using System.Numerics;
 
 public struct InvisibleCollision
 {
-    public Vector3[] Vertices { get; init; }
-    public Triangle[] Triangles { get; init; }
+    public Vector3[] Vertices { get; set; }
+    public Triangle[] Triangles { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public struct Triangle
 {
-    public int VertexA { get; init; }
-    public int VertexB { get; init; }
-    public int VertexC { get; init; }
+    public int VertexA { get; set; }
+    public int VertexB { get; set; }
+    public int VertexC { get; set; }
 }

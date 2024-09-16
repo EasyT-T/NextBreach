@@ -40,6 +40,24 @@ public static class Converter
             entities[i] = meshEntity;
         }
 
+        for (var i = 0; i < roomMesh.Entities.Length; i++)
+        {
+            var entity = roomMesh.Entities[i];
+            if (entity is not MeshEntity meshEntity)
+            {
+                continue;
+            }
+
+            if (meshEntity.Name != "door01.b3d")
+            {
+                continue;
+            }
+
+            meshEntity.Name = "door01.x";
+
+            entities[i] = meshEntity;
+        }
+
         roomMesh.Entities = entities;
         roomMesh.SaveToFile(Path.Combine(directoryPath ?? "./", $"{rmeshName}_opt.rmesh"));
     }

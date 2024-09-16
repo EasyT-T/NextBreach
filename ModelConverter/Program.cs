@@ -1,11 +1,13 @@
 ﻿namespace ModelConverter;
 
-class Program
+internal static class Program
 {
-    static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
-        var path = args.Length == 0 ? Console.ReadLine() : args[0];
+        var tasks = args.Select(filePath => Task.Run(() => Converter.Convert(filePath))).ToList();
 
-        Converter.Convert(path ?? string.Empty);
+        await Task.WhenAll(tasks);
+
+        Console.WriteLine("done!");
     }
 }
