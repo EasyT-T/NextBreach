@@ -1,4 +1,4 @@
-﻿namespace ModelConverter;
+namespace ModelConverter;
 
 using NextBreach.Map;
 using NextBreach.Structures;
@@ -6,27 +6,22 @@ using NextBreach.Structures.Entity;
 
 public static class Converter
 {
-    public static void Convert(string fileName)
+    public static void Convert(string filePath)
     {
-        var directoryPath = Path.GetDirectoryName(fileName);
-        var rmeshName = Path.GetFileNameWithoutExtension(fileName);
+        var mesh = RoomMesh.Load(filePath);
 
-        var roomMesh = RoomMesh.Load(fileName);
-        var entities = new IEntity[roomMesh.Entities.Length];
-        Array.Copy(roomMesh.Entities, entities, entities.Length);
-
-        for (var i = 0; i < roomMesh.Entities.Length; i++)
+        for (var i = 0; i < mesh.Entities.Length; i++)
         {
-            var entity = roomMesh.Entities[i];
+            var entity = mesh.Entities[i];
             if (entity is not ModelEntity modelEntity)
             {
                 continue;
             }
 
-            var meshEntity = new MeshEntity
+            mesh.Entities[i] = new MeshEntity
             {
-                Position = modelEntity.Position,
                 Name = modelEntity.Name,
+                Position = modelEntity.Position,
                 Rotation = modelEntity.Rotation,
                 Scale = modelEntity.Scale,
                 HasCollision = true,
@@ -36,29 +31,8 @@ public static class Converter
                     Name = string.Empty,
                 },
             };
-
-            entities[i] = meshEntity;
         }
 
-        for (var i = 0; i < roomMesh.Entities.Length; i++)
-        {
-            var entity = roomMesh.Entities[i];
-            if (entity is not MeshEntity meshEntity)
-            {
-                continue;
-            }
-
-            if (meshEntity.Name != "door01.b3d")
-            {
-                continue;
-            }
-
-            meshEntity.Name = "door01.x";
-
-            entities[i] = meshEntity;
-        }
-
-        roomMesh.Entities = entities;
-        roomMesh.SaveToFile(Path.Combine(directoryPath ?? "./", $"{rmeshName}_opt.rmesh"));
+        mesh.SaveToFile(Path.Combine("./Opt", Path.GetFileName(filePath)));
     }
 }

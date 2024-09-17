@@ -1,4 +1,4 @@
-namespace ModelConverter;
+namespace MappingTool;
 
 internal static class Program
 {
@@ -8,10 +8,19 @@ internal static class Program
 
         try
         {
+            if (!File.Exists("./Mappings.txt"))
+            {
+                Console.WriteLine("[ERROR]Mapping list not found.");
+                Console.ReadKey();
+                return;
+            }
+
             if (!Directory.Exists("./Opt"))
             {
                 Directory.CreateDirectory("./Opt");
             }
+
+            var mappingList = await File.ReadAllLinesAsync("./Mappings.txt");
 
             var tasks = new List<Task>();
 
@@ -26,7 +35,7 @@ internal static class Program
 
                 Console.WriteLine("Running Task: " + arg);
 
-                tasks.Add(Task.Run(() => Converter.Convert(arg)));
+                tasks.Add(Task.Run(() => Converter.Convert(arg, mappingList)));
             }
 
             await Task.WhenAll(tasks);

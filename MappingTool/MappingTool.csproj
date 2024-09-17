@@ -12,4 +12,10 @@
       <ProjectReference Include="..\NextBreach\NextBreach.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Mappings.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

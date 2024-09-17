@@ -1,0 +1,3 @@
+door01.b3d->door01.x
+contdoorleft.b3d->contdoorleft.x
+contdoorright.b3d->contdoorright.x
